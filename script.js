@@ -2,7 +2,6 @@
 //click the button-->the timer starts, you are givven a random question, and answers to the question (A,B,C,D)
 //click the choice--> check if the answer matches the choice
 //
-var quizBox = document.getElementsByClassName("quiz");
 var timer = 60;
 var right = 0;
 var wrong = 0;
@@ -25,7 +24,20 @@ var questionsArray = [
   },
 ];
 
-console.log(questionsArray[0].question);
+console.log(questionsArray[0].choices);
+
+var title = document.createElement("h1");
+title.innerHTML = questionsArray[0].question;
+
+document.getElementById("title").appendChild(title);
+
+for (let i = 0; i < questionsArray[0].choices.length; i++) {
+  console.log("looping?");
+  var choice = document.createElement("button");
+  choice.innerHTML = questionsArray[0].choices[i];
+
+  document.getElementById("choices").appendChild(choice);
+}
 
 // document.getElementById("start").addEventListener("click", function () {
 //   console.log("hello");
