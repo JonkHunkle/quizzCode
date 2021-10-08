@@ -24,19 +24,38 @@ var questionsArray = [
   },
 ];
 
-console.log(questionsArray[0].choices);
+function displayQuestion() {
+  console.log(questionsArray[0].choices);
 
-var title = document.createElement("h1");
-title.innerHTML = questionsArray[0].question;
+  var title = document.createElement("h1");
 
-document.getElementById("title").appendChild(title);
+  title.innerHTML = questionsArray[0].question;
 
-for (let i = 0; i < questionsArray[0].choices.length; i++) {
-  console.log("looping?");
-  var choice = document.createElement("button");
-  choice.innerHTML = questionsArray[0].choices[i];
+  document.getElementById("title").appendChild(title);
 
-  document.getElementById("choices").appendChild(choice);
+  for (let i = 0; i < questionsArray[0].choices.length; i++) {
+    console.log(questionsArray[0].choices[i]);
+
+    var choice = document.createElement("button");
+
+    choice.innerHTML = questionsArray[0].choices[i];
+    choice.setAttribute("name", questionsArray[0].choices[i]);
+
+    //trying to read the button on click
+
+    choice.addEventListener("click", function () {
+      //console.log(questionsArray.choice[i]);
+      choiceGotClicked(questionsArray.choices[i]);
+    });
+
+    document.getElementById("choices").appendChild(choice);
+  }
+}
+
+displayQuestion();
+
+function choiceGotClicked(event) {
+  console.log("we got clicked", event.target.name);
 }
 
 // document.getElementById("start").addEventListener("click", function () {
