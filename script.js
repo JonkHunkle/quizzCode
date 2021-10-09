@@ -1,10 +1,5 @@
-//when you load the page-->theres a link to the previous scores, timer is empty, and you have a welcome messsage with a button at the bottom
-//click the button-->the timer starts, you are givven a random question, and answers to the question (A,B,C,D)
-//click the choice--> check if the answer matches the choice
-//
 var timer = 60;
-var right = 0;
-var wrong = 0;
+var score = 0;
 var currentQuestion = 0;
 var questionsArray = [
   {
@@ -25,42 +20,40 @@ var questionsArray = [
 ];
 
 function displayQuestion() {
-  console.log(questionsArray[0].choices);
-
   var title = document.createElement("h1");
-
-  title.innerHTML = questionsArray[0].question;
-
+  title.innerHTML = questionsArray[currentQuestion].question;
   document.getElementById("title").appendChild(title);
-
-  for (let i = 0; i < questionsArray[0].choices.length; i++) {
-    console.log(questionsArray[0].choices[i]);
-
+  document.getElementById("choices").innerHTML = "";
+  for (let i = 0; i < questionsArray[currentQuestion].choices.length; i++) {
     var choice = document.createElement("button");
-
-    choice.innerHTML = questionsArray[0].choices[i];
-    choice.setAttribute("name", questionsArray[0].choices[i]);
-
-    //trying to read the button on click
-
-    choice.addEventListener("click", function () {
-      //console.log(questionsArray.choice[i]);
-      choiceGotClicked(questionsArray.choices[i]);
-    });
-
+    choice.innerHTML = questionsArray[currentQuestion].choices[i];
+    choice.addEventListener("click", choiceClicked);
+    choice.setAttribute("name", questionsArray[currentQuestion].choices[i]);
     document.getElementById("choices").appendChild(choice);
   }
 }
 
 displayQuestion();
 
-function choiceGotClicked(event) {
-  console.log("we got clicked", event.target.name);
+function choiceClicked(event) {
+  currentQuestion++;
+  document.getElementById("title").innerHTML = "";
+  if (event.target.name === questionsArray[currentQuestion].answer) {
+    score += 10;
+  } else {
+    timer -= 10;
+  }
+  console.log(score);
+  if (currentQuestion >= questionsArray.length) {
+    displayend();
+  } else {
+    displayQuestion();
+  }
 }
 
 // document.getElementById("start").addEventListener("click", function () {
 //   console.log("hello");
-//   getQuestion();
+//   displayQuesition();
 //   document.getElementById("start").remove("start");
 // });
 
