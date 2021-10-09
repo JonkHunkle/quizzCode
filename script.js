@@ -1,3 +1,5 @@
+//element variables
+
 var highScoreEl = document.getElementById("highScore");
 var scoreEl = document.getElementById("score");
 var timerEl = document.getElementById("timer");
@@ -7,6 +9,9 @@ var startEl = document.getElementById("start");
 var titleEl = document.getElementById("title");
 var choicesEl = document.getElementById("choices");
 
+//variables for functions
+
+var actualTimer;
 var time = 60;
 var score = 0;
 var currentQuestion = 0;
@@ -26,13 +31,18 @@ var questionsArray = [
     answer: "yes",
     choices: ["yes", "no"],
   },
+  {
+    question: "what do you use to write javascript?",
+    answer: "a keyboard",
+    choices: ["A bananana", "a pen", "a keyboard", "a crayon"],
+  },
 ];
 
 function displayQuestion() {
   var title = document.createElement("h1");
   titleEl.innerHTML = "";
   title.innerHTML = questionsArray[currentQuestion].question;
-  console.log(questionsArray[currentQuestion].question);
+  console.log(title);
   titleEl.appendChild(title);
   choicesEl.innerHTML = "";
   for (let i = 0; i < questionsArray[currentQuestion].choices.length; i++) {
@@ -75,7 +85,7 @@ startEl.addEventListener("click", function () {
 //countdown
 
 function countdown() {
-  setInterval(function () {
+  actualTimer = setInterval(function () {
     time--;
     timerEl.textContent = "you have " + time + " seconds left";
   }, 1000);
@@ -84,11 +94,13 @@ function countdown() {
 //endgame function
 
 function endGame() {
-  title = document.createElement("h1");
-
-  titleEl.innerHTML = "thanks for playing";
-  choicesEl.innerHTML = "check your highscore and play again";
-  console.log(title);
+  if (currentQuestion == questionsArray.length) {
+    title.innerHTML = "thanks for playing";
+    console.log(title);
+    choicesEl.innerHTML = "check your highscore and play again";
+    clearInterval(actualTimer);
+    console.log("this is the end", "yes it is");
+  }
   //console.log(choicesEl);
 }
 
