@@ -15,7 +15,7 @@ header {
 div {
   height: 100%;
   width: 33%;
-  border: solid 5px black;
+  /* border: solid 5px black; */
 }
 #timer {
   color: purple;
@@ -27,4 +27,26 @@ div {
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+#title {
+  display: flex;
+  justify-content: center;
+}
+#choices {
+  display: flex;
+  flex-direction: column;
+}
+
+#timer {
+  display: flex;
+  justify-content: center;
+}
+
+#highscore {
+  display: flex;
+  justify-content: center;
+}
+#score {
+  display: flex;
+  justify-content: center;
 }

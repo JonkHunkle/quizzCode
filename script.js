@@ -1,4 +1,13 @@
-var timer = 60;
+var highScoreEl = document.getElementById("highScore");
+var scoreEl = document.getElementById("score");
+var timerEl = document.getElementById("timer");
+var quizEl = document.getElementById("quiz");
+var welcomeCardEl = document.getElementById("welcomeCard");
+var startEl = document.getElementById("start");
+var titleEl = document.getElementById("title");
+var choicesEl = document.getElementById("choices");
+
+var time = 60;
 var score = 0;
 var currentQuestion = 0;
 var questionsArray = [
@@ -21,41 +30,67 @@ var questionsArray = [
 
 function displayQuestion() {
   var title = document.createElement("h1");
+  titleEl.innerHTML = "";
   title.innerHTML = questionsArray[currentQuestion].question;
-  document.getElementById("title").appendChild(title);
-  document.getElementById("choices").innerHTML = "";
+  console.log(questionsArray[currentQuestion].question);
+  titleEl.appendChild(title);
+  choicesEl.innerHTML = "";
   for (let i = 0; i < questionsArray[currentQuestion].choices.length; i++) {
     var choice = document.createElement("button");
     choice.innerHTML = questionsArray[currentQuestion].choices[i];
     choice.addEventListener("click", choiceClicked);
     choice.setAttribute("name", questionsArray[currentQuestion].choices[i]);
-    document.getElementById("choices").appendChild(choice);
+    choicesEl.appendChild(choice);
   }
 }
 
-displayQuestion();
+//what happens when you click the button
 
 function choiceClicked(event) {
-  currentQuestion++;
-  document.getElementById("title").innerHTML = "";
   if (event.target.name === questionsArray[currentQuestion].answer) {
     score += 10;
   } else {
-    timer -= 10;
+    time -= 10;
   }
-  console.log(score);
+  scoreEl.innerText = score;
+  currentQuestion++;
   if (currentQuestion >= questionsArray.length) {
-    displayend();
-  } else {
-    displayQuestion();
+    console.log("game over");
+
+    endGame();
   }
+  displayQuestion();
 }
 
-// document.getElementById("start").addEventListener("click", function () {
-//   console.log("hello");
-//   displayQuesition();
-//   document.getElementById("start").remove("start");
-// });
+//start button starts quiz and timer
+startEl.addEventListener("click", function () {
+  console.log("hello");
+  timerEl.innerHTML = "Total time: : " + time;
+  countdown();
+  displayQuestion();
+  startEl.remove("start");
+  welcomeCardEl.remove("welcomeCard");
+});
+
+//countdown
+
+function countdown() {
+  setInterval(function () {
+    time--;
+    timerEl.textContent = "you have " + time + " seconds left";
+  }, 1000);
+}
+
+//endgame function
+
+function endGame() {
+  title = document.createElement("h1");
+
+  titleEl.innerHTML = "thanks for playing";
+  choicesEl.innerHTML = "check your highscore and play again";
+  console.log(title);
+  //console.log(choicesEl);
+}
 
 // function getQuestion() {
 //   document.getElementById("question").textContent =
