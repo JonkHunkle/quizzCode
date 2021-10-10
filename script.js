@@ -12,7 +12,7 @@ var choicesEl = document.getElementById("choices");
 //variables for functions
 
 var actualTimer;
-var time = 3;
+var time = 60;
 var score = 0;
 var currentQuestion = 0;
 var questionsArray = [
@@ -38,6 +38,15 @@ var questionsArray = [
   },
 ];
 
+//adds event listener to start button to start quiz and timer
+startEl.addEventListener("click", function () {
+  timerEl.innerHTML = "Total time: : " + time;
+  countdown();
+  displayQuestion();
+  startEl.style.display = "none";
+  welcomeCardEl.style.display = "none";
+});
+
 //displays the question you are on
 function displayQuestion() {
   var title = document.createElement("h1");
@@ -57,7 +66,7 @@ function displayQuestion() {
   }
 }
 
-//what happens when you click the button
+//what happens when you click on your answer
 
 function choiceClicked(event) {
   if (event.target.name === questionsArray[currentQuestion].answer) {
@@ -74,31 +83,23 @@ function choiceClicked(event) {
   }
 }
 
-//start button starts quiz and timer
-startEl.addEventListener("click", function () {
-  timerEl.innerHTML = "Total time: : " + time;
-  countdown();
-  displayQuestion();
-  startEl.style.display = "none";
-  welcomeCardEl.style.display = "none";
-});
-
-//countdown
+//countdown. ends game at 0
 
 function countdown() {
   actualTimer = setInterval(function () {
     time--;
     timerEl.textContent = "you have " + time + " seconds left";
-    if (actualTimer <= 0) {
+    if (time <= 0) {
       clearInterval(actualTimer);
       endGame();
     }
   }, 1000);
 }
 
-//endgame function
+//endgame function. lets you add your score to the leaderboard
 
 function endGame() {
+  clearInterval(actualTimer);
   title.innerHTML = "thanks for playing";
   choicesEl.innerHTML = "check your highscore and play again";
   timerEl.innerHTML = "";
@@ -115,9 +116,10 @@ function endGame() {
   choicesEl.appendChild(subBtn);
 }
 
-//view the highscores
+//click the "highscore" button to view the highscores
 
 highScoreEl.addEventListener("click", function () {
+  clearInterval(actualTimer);
   timerEl.innerHTML = "";
   choicesEl.innerHTML = "";
   scoreEl.innerHTML = "";
@@ -140,10 +142,10 @@ function submit() {
   titleEl.innerHTML = "";
   timerEl.innerHTML = "";
   scoreEl.innerHTML = "";
-  time = 3;
+  time = 60;
 }
 
-//retrieve score and initials from local storage (add to highscore button)
+//retrieve score and initials from local storage (add to highscore page)
 function pull() {
   for (var key in localStorage) {
     var pEl = document.createElement("p");
@@ -152,7 +154,7 @@ function pull() {
   }
 }
 
-//displays welcome message
+//displays welcome message.
 function welcome() {
   startEl.style.display = "block";
   welcomeCardEl.style.display = "block";
