@@ -35,6 +35,7 @@ div {
 #choices {
   display: flex;
   flex-direction: column;
+  height: 250px;
 }
 
 #timer {

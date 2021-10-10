@@ -38,11 +38,13 @@ var questionsArray = [
   },
 ];
 
+//displays the question you are on
 function displayQuestion() {
   var title = document.createElement("h1");
-  titleEl.innerHTML = "";
+  timerEl.innerHTML = "Time left: " + time;
+  title.innerHTML = "";
   title.innerHTML = questionsArray[currentQuestion].question;
-  console.log(title);
+  titleEl.innerHTML = "";
   titleEl.appendChild(title);
   choicesEl.innerHTML = "";
   for (let i = 0; i < questionsArray[currentQuestion].choices.length; i++) {
@@ -62,24 +64,22 @@ function choiceClicked(event) {
   } else {
     time -= 10;
   }
-  scoreEl.innerText = score;
+  scoreEl.innerHTML = "score: " + score;
   currentQuestion++;
   if (currentQuestion >= questionsArray.length) {
-    console.log("game over");
-
     endGame();
+  } else {
+    displayQuestion();
   }
-  displayQuestion();
 }
 
 //start button starts quiz and timer
 startEl.addEventListener("click", function () {
-  console.log("hello");
   timerEl.innerHTML = "Total time: : " + time;
   countdown();
   displayQuestion();
-  startEl.remove("start");
-  welcomeCardEl.remove("welcomeCard");
+  startEl.style.display = "none";
+  welcomeCardEl.style.display = "none";
 });
 
 //countdown
@@ -94,47 +94,70 @@ function countdown() {
 //endgame function
 
 function endGame() {
-  if (currentQuestion == questionsArray.length) {
+  if (currentQuestion >= questionsArray.length) {
     title.innerHTML = "thanks for playing";
-    console.log(title);
     choicesEl.innerHTML = "check your highscore and play again";
     clearInterval(actualTimer);
-    console.log("this is the end", "yes it is");
+    timerEl.innerHTML = "";
+    var subBtn = document.createElement("button");
+    var inputEl = document.createElement("input");
+    var pEl = document.createElement("p");
+    pEl.innerHTML = "~enter your initials~";
+    subBtn.innerHTML = "submit initials and scores";
+    subBtn.id = "retry ";
+    subBtn.addEventListener("click", submit);
+    inputEl.id = "names";
+    choicesEl.appendChild(pEl);
+    choicesEl.appendChild(inputEl);
+    choicesEl.appendChild(subBtn);
   }
-  //console.log(choicesEl);
 }
 
-// function getQuestion() {
-//   document.getElementById("question").textContent =
-//     questionsArray[currentQuestion].question;
-//   document.getElementById("choiceA").textContent =
-//     questionsArray[currentQuestion].choices[0];
-//   document.getElementById("choiceB").textContent =
-//     questionsArray[currentQuestion].choices[1];
-//   document.getElementById("choiceC").textContent =
-//     questionsArray[currentQuestion].choices[2];
-//   document.getElementById("choiceD").textContent =
-//     questionsArray[currentQuestion].choices[3];
-//   currentQuestion++;
-//   if (currentQuestion >= questionsArray.length) {
-//     currentQuestion = 0;
-//   }
-// }
+//view the highscores
 
-// function checkQuestion() {
-//   if (
-//     (questionsArray[currentQuestion].val(answer) =
-//       questionsArray[currentQuestion].val(choice))
-//   ) {
-//     right++;
-//     console.log("num right: " + right);
-//     currentQuestion++;
-//     return currentQuestion;
-//   }
-// }
-// document.querySelector(".quiz").addEventListener("click", function (event) {
-//   console.log("yo");
-// console.log(event.target);
-//   //checkQuestion();
-// });
-//for loop to go through choice id and place in text
+highScoreEl.addEventListener("click", function () {
+  timerEl.innerHTML = "";
+  choicesEl.innerHTML = "";
+  scoreEl.innerHTML = "";
+  title.innerHTML = "check out these high scores!";
+  startEl.style.display = "none";
+  welcomeCardEl.style.display = "none";
+  var back = document.createElement("button");
+  back.id = "back";
+  back.addEventListener("click", welcome);
+  back.innerHTML = "press me to start again";
+  choicesEl.appendChild(back);
+  pull();
+});
+
+//submit socre and initials to local storage
+function submit() {
+  localStorage.setItem(document.getElementById("names").value, score);
+  welcome();
+  choicesEl.innerHTML = "";
+  titleEl.innerHTML = "";
+  timerEl.innerHTML = "";
+  scoreEl.innerHTML = "";
+  time = 60;
+}
+
+//retrieve score and initials from local storage (add to highscore button)
+function pull() {
+  for (var key in localStorage) {
+    var pEl = document.createElement("p");
+    pEl.innerHTML = "name: " + key + " score: " + localStorage[key];
+    if (typeof localStorage[key] === "string") choicesEl.appendChild(pEl);
+  }
+}
+
+//displays welcome message
+function welcome() {
+  startEl.style.display = "block";
+  welcomeCardEl.style.display = "block";
+  currentQuestion = 0;
+  score = 0;
+  titleEl.innerHTML = "";
+  choicesEl.innerHTML = "";
+  scoreEl.innerHTML = "";
+  timerEl.innerHTML = "";
+}
