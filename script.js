@@ -12,7 +12,7 @@ var choicesEl = document.getElementById("choices");
 //variables for functions
 
 var actualTimer;
-var time = 60;
+var time = 3;
 var score = 0;
 var currentQuestion = 0;
 var questionsArray = [
@@ -47,6 +47,7 @@ function displayQuestion() {
   titleEl.innerHTML = "";
   titleEl.appendChild(title);
   choicesEl.innerHTML = "";
+
   for (let i = 0; i < questionsArray[currentQuestion].choices.length; i++) {
     var choice = document.createElement("button");
     choice.innerHTML = questionsArray[currentQuestion].choices[i];
@@ -88,29 +89,30 @@ function countdown() {
   actualTimer = setInterval(function () {
     time--;
     timerEl.textContent = "you have " + time + " seconds left";
+    if (actualTimer <= 0) {
+      clearInterval(actualTimer);
+      endGame();
+    }
   }, 1000);
 }
 
 //endgame function
 
 function endGame() {
-  if (currentQuestion >= questionsArray.length) {
-    title.innerHTML = "thanks for playing";
-    choicesEl.innerHTML = "check your highscore and play again";
-    clearInterval(actualTimer);
-    timerEl.innerHTML = "";
-    var subBtn = document.createElement("button");
-    var inputEl = document.createElement("input");
-    var pEl = document.createElement("p");
-    pEl.innerHTML = "~enter your initials~";
-    subBtn.innerHTML = "submit initials and scores";
-    subBtn.id = "retry ";
-    subBtn.addEventListener("click", submit);
-    inputEl.id = "names";
-    choicesEl.appendChild(pEl);
-    choicesEl.appendChild(inputEl);
-    choicesEl.appendChild(subBtn);
-  }
+  title.innerHTML = "thanks for playing";
+  choicesEl.innerHTML = "check your highscore and play again";
+  timerEl.innerHTML = "";
+  var subBtn = document.createElement("button");
+  var inputEl = document.createElement("input");
+  var pEl = document.createElement("p");
+  pEl.innerHTML = "~enter your initials~";
+  subBtn.innerHTML = "submit initials and scores";
+  subBtn.id = "retry ";
+  subBtn.addEventListener("click", submit);
+  inputEl.id = "names";
+  choicesEl.appendChild(pEl);
+  choicesEl.appendChild(inputEl);
+  choicesEl.appendChild(subBtn);
 }
 
 //view the highscores
@@ -138,7 +140,7 @@ function submit() {
   titleEl.innerHTML = "";
   timerEl.innerHTML = "";
   scoreEl.innerHTML = "";
-  time = 60;
+  time = 3;
 }
 
 //retrieve score and initials from local storage (add to highscore button)
